@@ -1,0 +1,2 @@
+variable RESOURCE_NAME {
+}
