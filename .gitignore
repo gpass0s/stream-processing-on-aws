@@ -1,2 +1,3 @@
 /infra-as-code/.terraform/
+/infra-as-code/.terraform.lock.hcl
 /.idea/
