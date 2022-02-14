@@ -1,2 +1,0 @@
-variable RESOURCE_NAME {
-}
