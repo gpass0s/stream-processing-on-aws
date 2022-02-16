@@ -10,9 +10,9 @@ module "codepipeline-artifacts-bucket" {
 
 #Uploads the reference table to S3
 resource "aws_s3_bucket_object" "reference-table" {
-  key = "reference-table/upload-from-terraform/users_annual_income.csv"
+  key = "reference-table/upload-from-terraform/clients_annual_income.csv"
   bucket = module.codepipeline-artifacts-bucket.id
-  source = "../kda-utils/users_annual_income.csv"
+  source = "../utils/clients_annual_income.csv"
   server_side_encryption = "AES256"
   etag = filemd5("../kda-utils/users_annual_income.csv")
 }
