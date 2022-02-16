@@ -1,0 +1,156 @@
+#!/usr/bin/python3
+# -*- encoding: utf-8 -*-
+"""
+Created on Nov 4, 2016
+author: https://github.com/krivdat/
+This module generates random job titles
+"""
+import random
+
+adjective1 = [
+    "Key",
+    "Top",
+    "Main",
+    "Chief",
+    "Assistant to",
+    "Advisory to",
+    "Personal Assistant to",
+    "Part Time",
+    ""
+]
+
+adjective2 = [
+    "Senior",
+    "Junior",
+    "Regional",
+    "Country",
+    "Associate",
+    "Head",
+    "Super",
+    "Local",
+    "Global",
+    "Assistant",
+    "Independent",
+    "Full-time",
+    "Division",
+    "National",
+    "Creative",
+    "Dedicated",
+    "Operations",
+    "Improvement",
+    "Area",
+    "Licenced",
+    "Retail",
+    "Office",
+    "Industrial",
+    "International"
+]
+
+adjective3 = [
+    "Development",
+    "Technical",
+    "Business",
+    "Financial",
+    "IT",
+    "Project",
+    "Cost",
+    "Managing",
+    "Commercial",
+    "Procurement",
+    "Cleaning",
+    "Team",
+    "Real Estate",
+    "Sales",
+    "Property",
+    "Asset",
+    "Facility",
+    "Cashflow",
+    "Creative",
+    "Operation",
+    "Letting",
+    "Enterprise",
+    "Corporate",
+    "Accounting",
+    "Green Building",
+    "Construction",
+    "Marketing",
+    "Investment",
+    "Customer",
+    "Support",
+    "Feedback",
+    "Reconciliation",
+    "Volume Rebates",
+    "Sales Support",
+    "Master",
+    "Safety",
+    "Process",
+    "Research",
+    "Leasing",
+    "Strategy",
+    "Planning",
+    "Due Diligence",
+    "Loan",
+    "Risk",
+    "Valuations",
+    "Insurance",
+    "Debt",
+    "Portfolio",
+    "Acquisitions",
+    "Performance",
+    "Economic",
+    "Tax"
+]
+
+position = [
+    "Director",
+    "Manager",
+    "Administrator",
+    "Architect",
+    "Representative",
+    "Specialist",
+    "Boss",
+    "President",
+    "Vice-president",
+    "Partner",
+    "Leader",
+    "Coordinator",
+    "Engineer",
+    "Officer",
+    "Analyst",
+    "Consultant",
+    "Advisory",
+    "Estimator",
+    "Professional",
+    "Supervisor",
+    "Messenger",
+    "Executive",
+    "Agent",
+    "Appraiser",
+    "Economist",
+    "Controller",
+    "Counsel",
+    "Underwriter",
+    "Broker",
+    "Operator",
+    "Superintendent",
+    "Surveyor",
+    "Researcher"
+]
+
+
+def print_job_title():
+    adj1 = random.randrange(len(adjective1))
+    adj2 = random.randrange(len(adjective2))
+    adj3 = random.randrange(len(adjective3))
+    pos = random.randrange(len(position))
+    jobtitle = ""
+    if adjective1[adj1] != "":
+        jobtitle += adjective1[adj1] + " "
+    if adjective2[adj2] != "":
+        jobtitle += adjective2[adj2] + " "
+    if adjective3[adj3] != "":
+        jobtitle += adjective3[adj3] + " "
+    if position[pos] != "":
+        jobtitle += position[pos]
+
+    return jobtitle
