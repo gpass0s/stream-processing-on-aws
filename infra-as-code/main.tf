@@ -14,6 +14,6 @@ resource "aws_s3_bucket_object" "reference-table" {
   bucket = module.codepipeline-artifacts-bucket.id
   source = "../utils/clients_annual_income.csv"
   server_side_encryption = "AES256"
-  etag = filemd5("../kda-utils/users_annual_income.csv")
+  etag = filemd5("../utils/clients_annual_income.csv")
 }
 #endregion
