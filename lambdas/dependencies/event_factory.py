@@ -2,14 +2,15 @@
 # -*- encoding: utf-8 -*-
 """
 Created on Tue Feb 22 01:42 BRT 2022
+Updated on Wed Feb 23 01:08 BRT 2022
 author: https://github.com/gpass0s/
 This module implements an event factory
 """
 import random
+import datetime
 
 from abc import ABC, abstractmethod
 from faker import Faker
-from datetime import datetime
 
 
 class EventFactory(ABC):
@@ -80,7 +81,7 @@ class CreateRiskAnalysisEvent(EventFactory):
 
         data["ssn"] = client_personal_info["ssn"]
         data["documentNumber"] = document_number
-        data["yearMonthReference"] = datetime.now().strftime("%Y%m")
+        data["yearMonthReference"] = datetime.datetime.now().strftime("%Y%m")
         risk_origin_distribution = ["M", "M", "M", "M", "N", "N", "N", "L", "O", "P"]
         data["riskOrigin"] = risk_origin_distribution[random.randint(0, 9)]
         data["riskModality"] = random.randint(1300, 1320)
