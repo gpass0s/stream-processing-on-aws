@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 """
 Created on Tue Feb 22 01:42 BRT 2022
+Updated on Wed Feb 23 01:08 BRT 2022
 author: https://github.com/gpass0s/
 This module implements a data producer for the streaming process
 """
@@ -14,7 +15,7 @@ import time
 
 from faker import Faker
 from dependencies.event_factory import \
-    EventFactory, CreateAddressEvent, CreateHistoryEvent, CreateRiskAnalysisEvent
+    CreateAddressEvent, CreateHistoryEvent, CreateRiskAnalysisEvent
 
 
 def load_clients_base(csv_path_location):
@@ -87,9 +88,11 @@ def lambda_handler(event, context):
                 Message=json.dumps({"default": json.dumps(event)}),
                 MessageStructure="json"
             )
+            print(json.dumps(event))
             time.sleep(random.uniform(0.5, 3.5))
             if len(taken_generators) > 2:
                 break
 
-        if len(client_positions_already_taken) >= client_position_upper_limit - client_position_upper_limit:
+        if len(client_positions_already_taken) >= client_position_upper_limit - client_position_lower_limit:
             break
+
