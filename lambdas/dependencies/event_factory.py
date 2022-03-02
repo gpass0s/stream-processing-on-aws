@@ -20,7 +20,7 @@ class EventFactory(ABC):
             self,
             fake_data_generator: Faker,
             client_personal_info: dict
-    ) -> dict:
+    ) -> tuple:
         pass
 
 
@@ -30,19 +30,10 @@ class CreateAddressEvent(EventFactory):
             self,
             fake_data_generator: Faker,
             client_personal_info: dict
-    ) -> dict:
-        event = {}
-        data = {}
+    ) -> tuple:
 
         fake_hash = f"{fake_data_generator.hexify()}{fake_data_generator.hexify()}{fake_data_generator.hexify()}"
-        event["eventId"] = fake_hash
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
-        event["timestamp"] = timestamp
-        event["eventName"] = "client_address"
-
-        data["ssn"] = client_personal_info["ssn"]
-        data["clientName"] = client_personal_info["name"]
-        data["accountId"] = client_personal_info["accountId"]
 
         number_of_addresses_distribution = [1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3]
         number_of_addresses = number_of_addresses_distribution[random.randint(0, 10)]
@@ -56,8 +47,12 @@ class CreateAddressEvent(EventFactory):
             address["state"] = state_abbr
             addresses.append(address)
 
-        data["addresses"] = addresses
-        event["data"] = data
+        event = {"eventId": fake_hash, "timestamp": timestamp, "eventName": "client_address", "data": {
+            "ssn": client_personal_info["ssn"],
+            "clientName": client_personal_info["name"],
+            "accountId": client_personal_info["accountId"],
+            "addresses": addresses
+        }}
 
         message_attributes = {
             "eventId": {
@@ -83,29 +78,29 @@ class CreateRiskAnalysisEvent(EventFactory):
             self,
             fake_data_generator: Faker,
             client_personal_info: dict
-    ) -> dict:
-        event = {}
-        data = {}
+    ) -> tuple:
 
         fake_hash = f"{fake_data_generator.hexify()}{fake_data_generator.hexify()}{fake_data_generator.hexify()}"
-        event["eventId"] = fake_hash
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
-        event["timestamp"] = timestamp
-        event["eventName"] = "client_risk_analysis"
-
-        data["ssn"] = client_personal_info["ssn"]
-        data["yearMonthReference"] = datetime.datetime.now().strftime("%Y%m")
         risk_origin_distribution = ["M", "M", "M", "M", "N", "N", "N", "L", "O", "P"]
-        data["riskOrigin"] = risk_origin_distribution[random.randint(0, 9)]
-        data["riskModality"] = random.randint(1300, 1320)
-        data["financialInstitutionRisk"] = random.randint(600, 650)
-        data["judicialCaseQuantity"] = random.randint(0, 9)
         origin_distribution = ["internal", "internal", "internal", "external"]
-        data["checkOrigin"] = origin_distribution[random.randint(0, 3)]
-        data["totalOverDueCredit"] = round(random.uniform(0, 10000), 2)
-        data["riskScore"] = round(random.uniform(0, 0.99), 4)
 
-        event["data"] = data
+        event = {
+            "eventId": fake_hash,
+            "timestamp": timestamp,
+            "eventName": "client_risk_analysis",
+            "data": {
+                "ssn": client_personal_info["ssn"],
+                "yearMonthReference": datetime.datetime.now().strftime("%Y%m"),
+                "riskOrigin": risk_origin_distribution[random.randint(0, 9)],
+                "riskModality": random.randint(1300, 1320),
+                "financialInstitutionRisk": random.randint(600, 650),
+                "judicialCaseQuantity": random.randint(0, 9),
+                "checkOrigin": origin_distribution[random.randint(0, 3)],
+                "totalOverDueCredit": round(random.uniform(0, 10000), 2),
+                "riskScore": round(random.uniform(0, 0.99), 4)
+            }
+        }
 
         message_attributes = {
             "eventId": {
@@ -131,31 +126,29 @@ class CreateHistoryEvent(EventFactory):
             self,
             fake_data_generator: Faker,
             client_personal_info: dict
-    ) -> dict:
-        event = {}
-        data = {}
+    ) -> tuple:
 
         fake_hash = f"{fake_data_generator.hexify()}{fake_data_generator.hexify()}{fake_data_generator.hexify()}"
-        event["eventId"] = fake_hash
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
-        event["timestamp"] = timestamp
-        event["eventName"] = "client_history"
+        creation_date = fake_data_generator.date_between_dates(datetime.date(2019, 1, 1), datetime.date.today())
+        last_access_date = fake_data_generator.date_between_dates(creation_date, datetime.date.today())
 
-        data["ssn"] = client_personal_info["ssn"]
-        creation_date = fake_data_generator.date_between_dates(
-            datetime.date(2019, 1, 1),
-            datetime.date.today()
-        )
-        data["creation"] = creation_date.strftime("%Y-%m-%d")
-        data["access"] = random.randint(1, 500)
-        data["currentBalance"] = round(random.uniform(0, 10000), 2)
-        data["lastAccessDate"] = fake_data_generator.date_between_dates(
-            creation_date,
-            datetime.date.today()
-        ).strftime("%Y-%m-%d")
+        event = {
+            "eventId": fake_hash,
+            "timestamp": timestamp,
+            "eventName": "client_history",
+            "data": {
+                "ssn": client_personal_info["ssn"],
+                "creation": creation_date.strftime("%Y-%m-%d"),
+                "access": random.randint(1, 500),
+                "currentBalance": round(random.uniform(0, 10000), 2),
+                "lastAccessDate": last_access_date,
 
-        event["data"] = data
 
+            }
+
+        }
+    
         message_attributes = {
             "eventId": {
                 "StringValue": fake_hash,
@@ -171,4 +164,4 @@ class CreateHistoryEvent(EventFactory):
             }
         }
 
-        return event
+        return event, message_attributes
