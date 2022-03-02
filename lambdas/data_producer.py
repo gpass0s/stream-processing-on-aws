@@ -2,15 +2,17 @@
 # -*- encoding: utf-8 -*-
 """
 Created on Tue Feb 22 01:42 BRT 2022
-Updated on Wed Feb 23 01:08 BRT 2022
+Updated on Tue Mar 01 03:06  BRT 2022
 author: https://github.com/gpass0s/
-This module implements a data producer for the streaming process
+This module implements a fake data producer for the streaming process
 """
 import boto3
 import csv
 import json
+import numpy
 import os
 import random
+import threading
 import time
 
 from faker import Faker
@@ -30,69 +32,48 @@ def load_clients_base(csv_path_location):
     return clients_base
 
 
-def find_a_non_taken_number(
-        taken_numbers,
-        lower_limit,
-        upper_limit
-):
-    while True:  # While loop to find a non chosen client position
-        number = random.randint(lower_limit, upper_limit)
-        try:
-            taken_numbers[number]
-        except KeyError:
-            break
-    taken_numbers[number] = True
-    return number
+def threads_controller(sns_client, sns_topic_arn, fake_data_generator, event_generators, clients_base_chunk):
+    while clients_base_chunk:
+        events_generation_order = random.sample(range(0, 3), 3)
+        client_personal_info = clients_base_chunk.pop(0)
 
-
-def lambda_handler(event, context):
-    csv_path_location = os.environ["CSV_PATH_LOCATION"]
-    client_position_lower_limit = int(os.environ["CLIENTS_BASE_LOWER_LIMIT"])
-    client_position_upper_limit = int(os.environ["CLIENTS_BASE_UPPER_LIMIT"])
-    sns_topic_arn = os.environ["SNS_TOPIC_ARN"]
-
-    fake_data_generator = Faker()
-    clients_base = load_clients_base(csv_path_location)
-    sns_client = boto3.client('sns', region="us-east-1")
-    client_positions_already_taken = {}
-
-    event_generators = [
-        CreateAddressEvent(),
-        CreateRiskAnalysisEvent(),
-        CreateHistoryEvent(),
-    ]
-
-    while True:  # While loop to generate events indefinitely
-        client_position = find_a_non_taken_number(
-            client_positions_already_taken,
-            client_position_lower_limit,
-            client_position_upper_limit
-        )
-
-        client_personal_info = clients_base[client_position]
-        document_number = str(random.randint(pow(10, 6), (pow(10, 7) - 1)))
-        taken_generators = {}
-
-        while True:  # While loop to create events randomly
-            generator_position = find_a_non_taken_number(taken_generators, 0, 2)
+        while events_generation_order:
+            generator_position = events_generation_order.pop(0)
             event_generator = event_generators[generator_position]
-            # generates an event in factory
-            event = event_generator.generate_event(
-                fake_data_generator,
-                document_number,
-                client_personal_info
-            )
-            # publishes message in SNS
+            event, message_attributes = event_generator.generate_event(fake_data_generator, client_personal_info)
             sns_client.publish(
                 TargetArn=sns_topic_arn,
-                Message=json.dumps({"default": json.dumps(event)}),
+                Message=json.dumps(event),
+                MessageAttributes=message_attributes,
                 MessageStructure="json"
             )
             print(json.dumps(event))
             time.sleep(random.uniform(0.5, 3.5))
-            if len(taken_generators) > 2:
-                break
 
-        if len(client_positions_already_taken) >= client_position_upper_limit - client_position_lower_limit:
-            break
 
+def lambda_handler(event, context):
+    csv_path_location = os.environ["CSV_PATH_LOCATION"]
+    sns_topic_arn = os.environ["SNS_TOPIC_ARN"]
+    number_of_threads = os.environ["NUMBER_OF_THREADS"]  # threads simulate concurrent accesses
+
+    fake_data_generator = Faker()
+    clients_base = load_clients_base(csv_path_location)
+    clients_base_chunks = numpy.array_split(clients_base, number_of_threads)
+    sns_client = boto3.client('sns', region="us-east-1")
+
+    event_generators = [CreateAddressEvent(), CreateRiskAnalysisEvent(), CreateHistoryEvent()]
+    threads = []
+
+    for i in range(number_of_threads):  # start threads
+        thread = threading.Thread(target=threads_controller, args=(
+            sns_client,
+            sns_topic_arn,
+            fake_data_generator,
+            event_generators,
+            clients_base_chunks[i].tolist()
+        ))
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
