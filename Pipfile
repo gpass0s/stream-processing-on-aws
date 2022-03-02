@@ -8,6 +8,7 @@ pandas = "*"
 names = "*"
 faker = "*"
 boto3 = "*"
+numpy = "*"
 
 [dev-packages]
 
