@@ -47,7 +47,6 @@ def threads_controller(sns_client, sns_topic_arn, fake_data_generator, event_gen
                 MessageAttributes=message_attributes,
                 MessageStructure="json"
             )
-            print(json.dumps(event))
             time.sleep(random.uniform(0.5, 3.5))
 
 
