@@ -148,7 +148,7 @@ class CreateHistoryEvent(EventFactory):
             }
 
         }
-    
+
         message_attributes = {
             "eventId": {
                 "StringValue": fake_hash,
