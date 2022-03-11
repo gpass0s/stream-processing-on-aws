@@ -53,12 +53,13 @@ def threads_controller(sns_client, sns_topic_arn, fake_data_generator, event_gen
 def lambda_handler(event, context):
     csv_path_location = os.environ["CSV_PATH_LOCATION"]
     sns_topic_arn = os.environ["SNS_TOPIC_ARN"]
-    number_of_threads = os.environ["NUMBER_OF_THREADS"]  # threads simulate concurrent accesses
+    number_of_threads = int(os.environ["NUMBER_OF_THREADS"]) # threads simulate concurrent accesses
+    aws_region = os.environ["AWS_REGION"]
 
     fake_data_generator = Faker()
     clients_base = load_clients_base(csv_path_location)
     clients_base_chunks = numpy.array_split(clients_base, number_of_threads)
-    sns_client = boto3.client('sns', region="us-east-1")
+    sns_client = boto3.client('sns', region=aws_region)
 
     event_generators = [CreateAddressEvent(), CreateRiskAnalysisEvent(), CreateHistoryEvent()]
     threads = []
