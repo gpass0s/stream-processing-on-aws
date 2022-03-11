@@ -19,7 +19,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 127-57-4702,263364,Kyle Clark,1982-01-01,"Scientist, product/process development",41566.42
 533-05-0708,263365,Kevin Dawson,1923-11-17,Clinical cytogeneticist,54275.1
 403-53-2617,263366,Misty Fisher,1921-02-17,Chief Marketing Officer,95676.47
-662-97-2481,263367,Melissa Lawrence,1918-04-08,Outdoor activities/education manager,83975.92
+662-97-2481,263367,Melissa Lawrence,1918-04-08,Outdoor actives/education manager,83975.92
 308-98-2636,263368,Kathryn Willis,1918-07-24,Teaching laboratory technician,84215.89
 670-96-7726,263369,Jeffrey Nelson,1934-12-28,"Conservator, museum/gallery",47771.6
 360-24-3553,263370,David Ellis,1992-07-15,"Journalist, newspaper",49021.73
@@ -29,7 +29,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 687-99-0092,263374,Desiree Little,1924-11-08,"Surveyor, quantity",50003.61
 314-97-4948,263375,Andrew Johnson,1973-02-13,Herpetologist,58951.36
 240-63-7905,263376,Chelsea King,1929-03-17,"Production designer, theatre/television/film",106081.63
-402-16-2125,263377,Jonathan Riley,2006-08-27,Exhibition designer,103476.78
+402-16-2125,263377,Jonathan Riley,2006-08-27,Exhibon designer,103476.78
 744-62-4124,263378,Nancy Turner,1928-03-23,Geophysicist/field seismologist,62264.21
 343-35-4987,263379,Jeffrey Hodges,1989-03-03,"Psychotherapist, child",49195.88
 596-22-4259,263380,Kathleen Lawrence,1979-08-11,Jewellery designer,69588.71
@@ -56,7 +56,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 393-62-7258,263401,Victoria Bates,2008-12-31,"Engineer, structural",71058.37
 294-69-2232,263402,Sharon King,1952-06-28,Physiotherapist,84469.68
 831-42-3509,263403,Penny Jenkins,1939-10-26,Airline pilot,69993.61
-038-29-0335,263404,Alicia Ramirez,1999-06-01,"Designer, exhibition/display",94405.31
+038-29-0335,263404,Alicia Ramirez,1999-06-01,"Designer, exhibon/display",94405.31
 131-31-7891,263405,Kelsey Smith,1926-04-04,Counselling psychologist,86078.24
 433-92-6007,263406,David Walker,1930-03-14,"Scientist, clinical (histocompatibility and immunogenetics)",60873.28
 079-40-6975,263407,Chad Martin,1992-07-20,Interpreter,72509.22
@@ -73,7 +73,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 462-45-9125,263418,Elizabeth Figueroa,1953-05-27,Water engineer,73433.92
 597-23-9468,263419,Hannah Nunez,1950-05-04,Mechanical engineer,64624.2
 719-15-1190,263420,Jessica Lopez,2011-01-23,Biomedical engineer,77833.06
-559-64-2736,263421,Nicole Barker,1946-04-14,Environmental health practitioner,57120.17
+559-64-2736,263421,Nicole Barker,1946-04-14,Environmental health practoner,57120.17
 629-33-2205,263422,Michael Thomas,1964-02-27,Building surveyor,82490.54
 550-88-7682,263423,Erica Glenn,1919-03-03,Psychiatrist,61172.94
 721-64-7796,263424,Melinda Garcia,1929-05-05,Occupational therapist,87681.9
@@ -150,7 +150,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 174-46-6838,263495,Dylan Duncan,2001-08-13,"Investment banker, corporate",106150.01
 521-47-4656,263496,Ashley Nguyen,1931-05-25,Associate Professor,56422.24
 425-62-3434,263497,Robert Rivera,1952-06-24,Arts development officer,85864.36
-107-65-3263,263498,Margaret Martinez MD,1956-12-16,Outdoor activities/education manager,88105.08
+107-65-3263,263498,Margaret Martinez MD,1956-12-16,Outdoor actives/education manager,88105.08
 504-68-6180,263499,Billy Burnett,1978-08-28,Arts development officer,92133.22
 772-70-7795,263500,Daniel Murray,1954-04-25,Minerals surveyor,70356.45
 801-64-3917,263501,Cheryl Keith,2005-03-05,"Buyer, industrial",76244.2
@@ -166,7 +166,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 247-98-7324,263511,Stephen Hurley,1980-12-06,Editorial assistant,78766.26
 764-82-7840,263512,Janet Jones,2001-04-10,"Development worker, community",40366.38
 611-02-0932,263513,Adam Wright,1938-01-15,Marine scientist,81668.67
-616-93-8242,263514,Zachary Wise,1983-03-18,Radiation protection practitioner,93874.95
+616-93-8242,263514,Zachary Wise,1983-03-18,Radiation protection practoner,93874.95
 412-35-9802,263515,Timothy Burton,1934-12-06,"Social research officer, government",65136.37
 226-04-7882,263516,John Dougherty,1963-02-15,Fast food restaurant manager,80203.01
 723-22-1117,263517,Wesley Bailey,1935-09-10,Records manager,42034.86
@@ -198,7 +198,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 404-37-1525,263543,Lance Ali DDS,1974-11-19,Estate manager/land agent,108768.25
 605-57-2709,263544,Eric Taylor,1947-01-08,Tree surgeon,104477.19
 750-38-0089,263545,Chad Mitchell,1977-03-29,Firefighter,78956.77
-523-51-1813,263546,Dr. Nathaniel Watson,1990-05-14,Radiation protection practitioner,74026.64
+523-51-1813,263546,Dr. Nathaniel Watson,1990-05-14,Radiation protection practoner,74026.64
 882-25-8583,263547,Cassidy Gonzalez,1978-07-06,Midwife,95590.44
 403-18-7949,263548,Patricia Baxter,1919-01-11,Energy manager,84263.1
 635-25-3287,263549,Erika Hernandez,2001-01-05,"Scientist, research (medical)",57770.71
@@ -260,9 +260,9 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 313-82-1193,263605,Shawn Wilson,1959-05-06,"Scientist, research (maths)",71356.62
 327-52-5262,263606,Jeffery Freeman,2011-09-18,"Doctor, hospital",99662.91
 351-34-9030,263607,Jimmy Jefferson,1941-06-02,Counselling psychologist,71003.0
-512-02-6304,263608,Veronica Allison,1975-09-02,Nutritional therapist,99792.64
+512-02-6304,263608,Veronica Allison,1975-09-02,Nutronal therapist,99792.64
 739-81-3307,263609,Emily Hart,1906-04-28,Clinical biochemist,84192.67
-281-82-1393,263610,Megan Adams,1939-02-28,"Administrator, charities/voluntary organisations",40759.24
+281-82-1393,263610,Megan Adams,1939-02-28,"Administrator, chares/voluntary organisations",40759.24
 231-94-8378,263611,Wendy Keller,1997-09-11,"Therapist, occupational",46849.36
 090-89-8102,263612,Erica Jenkins,1908-12-09,Landscape architect,40622.04
 001-60-9970,263613,Benjamin Harding,1989-07-23,Historic buildings inspector/conservation officer,109273.93
@@ -300,7 +300,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 760-81-9299,263645,Randy Morton,1978-03-28,Chartered legal executive (England and Wales),75089.36
 235-67-7984,263646,David Wilson,1977-07-01,"Scientist, clinical (histocompatibility and immunogenetics)",53883.38
 247-29-0951,263647,Pedro Sparks,2005-04-07,Clinical research associate,86806.68
-270-98-0467,263648,Bianca Branch,2010-02-09,Facilities manager,45732.56
+270-98-0467,263648,Bianca Branch,2010-02-09,Faciles manager,45732.56
 020-64-3431,263649,Andrew Francis,1951-01-28,Chief Executive Officer,44923.17
 509-85-1786,263650,Theresa Frazier,1952-08-05,Data scientist,74814.05
 511-14-1270,263651,James Calhoun,1963-09-24,"Surveyor, minerals",64356.13
@@ -361,7 +361,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 531-61-1363,263706,Mrs. Crystal Esparza,1966-03-23,"Civil engineer, consulting",55050.39
 246-53-0377,263707,Cynthia Arroyo,1952-04-19,"Designer, graphic",87573.21
 102-92-0029,263708,Kristin Carroll,2005-10-22,"Investment banker, corporate",72083.24
-575-01-6297,263709,Nicole Turner,1995-11-29,"Exhibitions officer, museum/gallery",103239.93
+575-01-6297,263709,Nicole Turner,1995-11-29,"Exhibons officer, museum/gallery",103239.93
 442-19-1049,263710,Aaron Howard,1964-12-30,Retail merchandiser,100312.71
 081-39-3493,263711,Courtney Park,1957-03-29,"Surveyor, building",72106.48
 201-71-3340,263712,Charles Dawson,1912-06-29,Media planner,77445.27
@@ -575,7 +575,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 538-83-7420,263920,Katherine Livingston,1987-06-13,Metallurgist,100469.7
 311-16-2468,263921,Roger Morrow,1969-07-20,Forest/woodland manager,43698.58
 727-92-8173,263922,Ashley Montgomery,2004-07-17,Clinical research associate,103983.64
-053-72-9694,263923,Brian Harper,1920-08-21,Outdoor activities/education manager,50917.81
+053-72-9694,263923,Brian Harper,1920-08-21,Outdoor actives/education manager,50917.81
 801-01-8580,263924,Andrew Haynes,1913-08-03,Arts administrator,78987.72
 400-25-3487,263925,Lee Cole,1987-02-26,Regulatory affairs officer,96768.62
 522-24-6154,263926,Sarah Murray,1995-08-08,"Psychotherapist, dance movement",70036.93
@@ -585,7 +585,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 821-73-4586,263930,Karen Brown,1912-04-04,"Presenter, broadcasting",97619.89
 604-67-3446,263931,Ernest Sandoval,1919-12-31,Field seismologist,64234.65
 208-87-8788,263932,Daniel Brock,1960-04-03,Special effects artist,90433.37
-341-73-4825,263933,Christina Nixon,1933-02-09,Animal nutritionist,49889.15
+341-73-4825,263933,Christina Nixon,1933-02-09,Animal nutronist,49889.15
 812-66-5653,263934,Andrew Richardson,1944-12-27,Geophysical data processor,102898.52
 436-55-7569,263935,Katrina Smith,2018-02-24,Optometrist,109099.47
 398-04-6707,263936,Brian Odonnell,1919-08-11,"Civil engineer, contracting",71847.44
@@ -609,7 +609,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 820-09-0712,263954,Jennifer Kennedy,1916-04-30,Associate Professor,100293.46
 754-76-3869,263955,Andre Elliott,2013-09-01,"Restaurant manager, fast food",101823.74
 470-65-4520,263956,Jeremy Jensen,1927-05-17,Field seismologist,72390.49
-750-87-5947,263957,Elizabeth Alvarez,2008-11-12,"Research officer, political party",49351.26
+750-87-5947,263957,Elizabeth Alvarez,2008-11-12,"Research officer, polcal party",49351.26
 021-60-7065,263958,David Young,1958-12-11,Air broker,102588.14
 544-89-8458,263959,James Elliott,1908-05-26,Investment analyst,62086.71
 681-25-9436,263960,Jade Sandoval,1908-06-09,Commercial art gallery manager,77830.62
@@ -638,7 +638,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 450-22-9616,263983,Paul Taylor,1931-12-09,"Conservator, museum/gallery",88555.37
 380-05-3966,263984,Amanda Gonzalez,1998-12-23,"Copywriter, advertising",71613.88
 821-97-0292,263985,Nichole Davis,1973-11-24,"Conservation officer, historic buildings",56524.33
-864-57-6212,263986,Regina Gay,1996-03-22,Radiation protection practitioner,67775.6
+864-57-6212,263986,Regina Gay,1996-03-22,Radiation protection practoner,67775.6
 448-90-1503,263987,Jeffery Kelly,2015-01-05,"Editor, commissioning",91643.38
 541-26-1682,263988,Rebecca Acevedo,1952-12-04,Financial risk analyst,72225.33
 465-82-4156,263989,Luke Davis,1946-07-09,Chiropractor,67336.29
@@ -688,7 +688,7 @@ ssn,accountId,name,date_of_birth,occupation,annual_income
 831-23-5572,264033,Nathaniel Taylor,1936-01-31,Hotel manager,57810.67
 651-88-3614,264034,Nathan Santana,1990-12-03,"Engineer, mining",87803.64
 813-10-8179,264035,James Collier,1961-09-26,"Nurse, children's",104550.95
-487-15-4739,264036,Oscar Garcia,1931-01-24,Facilities manager,109617.98
+487-15-4739,264036,Oscar Garcia,1931-01-24,Faciles manager,109617.98
 401-63-9462,264037,Stephen Reed,1971-06-11,Pharmacologist,78387.53
 515-67-5841,264038,Elizabeth Lopez,1926-02-20,Leisure centre manager,57203.96
 042-36-7338,264039,Michelle Kelly,2008-11-18,Sports development officer,96087.63
