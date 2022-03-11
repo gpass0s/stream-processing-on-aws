@@ -1,11 +1,17 @@
+locals {
+  PROJECT_NAME   = "streaming-processing"
+  ENV            = "prd"
+  TAGS           = "streaming-processing"
+}
+
 #region S3
 #Creates a S3 bucket
 module "codepipeline-artifacts-bucket" {
   source          = "./modules/s3"
-  ENV             = "prd"
-  PROJECT_NAME    = "streaming-processing"
+  ENV             = local.ENV
+  PROJECT_NAME    = local.PROJECT_NAME
   RESOURCE_SUFFIX = "codepipeline-artifacts"
-  AWS_TAGS        = "streaming-processing"
+  AWS_TAGS        = local.TAGS
 }
 
 #Uploads the reference table to S3
