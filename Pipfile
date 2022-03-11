@@ -4,11 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pandas = "*"
-names = "*"
 faker = "*"
 boto3 = "*"
 numpy = "*"
+pandas = "*"
 
 [dev-packages]
 
