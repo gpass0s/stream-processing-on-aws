@@ -15,13 +15,14 @@ if __name__ == "__main__":
     fake = Faker()
     reference_table_list = []
     for i in range(10000):
-        row_dict = {}
-        row_dict["ssn"] = str(fake.ssn())
-        row_dict["accountId"] = str(int(datetime.now().strftime("%H%M%S")) + pow(10, 5) + i)
-        row_dict["name"] = fake.name()
-        row_dict["date_of_birth"] = str(fake.date_of_birth().strftime("%Y-%m-%d"))
-        row_dict["occupation"] = fake.job().strip('"')
-        row_dict["annual_income"] = round(random.uniform(40000, 110000), 2)
+        row_dict = {
+            "ssn": str(fake.ssn()),
+            "accountId": str(int(datetime.now().strftime("%H%M%S")) + pow(10, 5) + i),
+            "name": fake.name(),
+            "date_of_birth": str(fake.date_of_birth().strftime("%Y-%m-%d")),
+            "occupation": fake.job().strip('"'),
+            "annual_income": round(random.uniform(40000, 110000), 2)
+        }
         reference_table_list.append(row_dict)
 
     reference_table_df = pd.DataFrame(reference_table_list)
