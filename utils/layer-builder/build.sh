@@ -55,11 +55,12 @@ rm -rf $env_$function_name
 
 # Zipping deployment package...
 echo "Zipping deployment package..."
+rm -rf $$package_output_name.zip
 rm -rf $package_output_name/*pandas*
 zip -r $package_output_name.zip $package_output_name/.
 
 # Removing deployment package folder
 echo "Removing deployment package folder..."
 rm -rf $package_output_name
-
+rm -rf lambdas/.zip
 echo "Finished script execution!"
