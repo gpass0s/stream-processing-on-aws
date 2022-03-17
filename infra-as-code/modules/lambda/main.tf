@@ -5,7 +5,6 @@ locals {
 module "security" {
   source              = "./security"
   RESOURCE_NAME       = local.RESOURCE_NAME
-  AWS_TAGS            = var.AWS_TAGS
 }
 
 module "package" {
@@ -47,7 +46,6 @@ resource "aws_lambda_function" "lambda" {
   filename                       = module.package.output_path
   source_code_hash               = module.package.output_base64sha256
   role                           = module.security.role-arn
-  tags                           = var.AWS_TAGS
 
   environment {
     variables = var.LAMBDA_ENVIRONMENT_VARIABLES
