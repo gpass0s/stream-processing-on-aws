@@ -2,7 +2,6 @@ resource "aws_iam_role" "iam_for_lambda" {
  name               = var.RESOURCE_NAME
   assume_role_policy = data.aws_iam_policy_document.lambda_role.json
   path               = "/service-role/"
-  tags               = var.AWS_TAGS
 }
 
 resource "aws_iam_role_policy" "iam_for_lambda_policy" {
