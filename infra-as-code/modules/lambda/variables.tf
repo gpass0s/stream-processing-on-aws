@@ -1,7 +1,6 @@
 variable "PROJECT_NAME" {}
 variable "ENV" {}
 variable "RESOURCE_SUFFIX" {}
-variable "AWS_TAGS" {}
 
 variable "LAMBDA_LAYER" {
   type    = list(string)
