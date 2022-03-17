@@ -1,20 +1,25 @@
 resource "null_resource" "install_python_dependencies" {
 
-  triggers {
-    handler      = base64sha256(file("../${path.root}/${var.BUILD_SETTINGS["funtion_path"]}"))
-    requirements = base64sha256(file("../${path.root}/${var.BUILD_SETTINGS["requirements_path"]}"))
-    build        = base64sha256(file("../${path.root}/${var.BUILD_SETTINGS["builder_script_path"]}"))
+  triggers = {
+    always_run = timestamp()
   }
 
   provisioner "local-exec" {
-    command = "../${path.root}/${var.BUILD_SETTINGS["builder_script_path"]}"
+    command = "bash ${var.BUILD_SETTINGS["builder_script_path"]}"
 
     environment = {
-      function_name       = var.BUILD_SETTINGS["function_name"]
+      layer_name          = var.BUILD_SETTINGS["layer_name"]
       runtime             = var.BUILD_SETTINGS["runtime"]
-      root_directory      = "../${path.root}"
+      root_directory      = "../"
       package_output_name = var.BUILD_SETTINGS["package_output_name"]
       requirements_path   = var.BUILD_SETTINGS["requirements_path"]
     }
   }
 }
+
+/*data "archive_file" "my_lambda_function_with_dependencies" {
+  depends_on  = [null_resource.install_python_dependencies]
+  source_dir  = "../${path.root}/lambdas/"
+  output_path = "../${path.root}/${var.BUILD_SETTINGS["package_output_name"]}.zip"
+  type        = "zip"
+}*/
