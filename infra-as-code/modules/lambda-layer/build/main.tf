@@ -1,7 +1,8 @@
 resource "null_resource" "install_python_dependencies" {
 
   triggers = {
-    always_run = timestamp()
+    requirements = base64sha256(file("../${var.BUILD_SETTINGS["requirements_path"]}"))
+    build        = base64sha256(file(var.BUILD_SETTINGS["builder_script_path"]))
   }
 
   provisioner "local-exec" {
