@@ -6,9 +6,6 @@ locals {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = local.BUCKET_NAME
-  tags   = {
-    Name   = var.AWS_TAGS
-  }
 }
 
 resource "aws_s3_bucket_acl" "bucket_acl" {
