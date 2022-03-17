@@ -1,3 +1,4 @@
 /infra-as-code/.terraform/
 /infra-as-code/.terraform.lock.hcl
 /.idea/
+python_dependencies.zip
