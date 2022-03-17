@@ -14,7 +14,7 @@ from faker import Faker
 if __name__ == "__main__":
     fake = Faker()
     reference_table_list = []
-    for i in range(10000):
+    for i in range(99999):
         row_dict = {
             "ssn": str(fake.ssn()),
             "accountId": str(int(datetime.now().strftime("%H%M%S")) + pow(10, 5) + i),
