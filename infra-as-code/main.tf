@@ -30,7 +30,7 @@ module "lambda-layer" {
   ENV                   = local.ENV
   PROJECT_NAME          = local.PROJECT_NAME
   RESOURCE_SUFFIX       = "lambda-layer"
-  BUILDER_SCRIPT_PATH   = "../lambdas/layer-builder/build.sh"
+  BUILDER_SCRIPT_PATH   = "../utils/layer-builder/build.sh"
   REQUIREMENTS_PATH     = "requirements.txt"
   PACKAGE_OUTPUT_NAME   = "python_dependencies"
 }
@@ -52,7 +52,7 @@ module "lambda-data-producer" {
     "filename"    = "lambdas/"
   }
   LAMBDA_ENVIRONMENT_VARIABLES = {
-    "CSV_PATH_LOCATION" = aws_s3_object.reference-table.id
+    "CSV_PATH_LOCATION" = "s3://${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
     "SNS_TOPIC_ARN"     = module.sns-data-producer.arn
     "NUMBER_OF_THREADS" = 10
     "REGION"        = data.aws_region.current.name
