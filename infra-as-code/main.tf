@@ -52,7 +52,7 @@ module "lambda-data-producer" {
     "filename"    = "lambdas/"
   }
   LAMBDA_ENVIRONMENT_VARIABLES = {
-    "CSV_PATH_LOCATION" = "${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
+    "CSV_PATH_LOCATION" = aws_s3_object.reference-table.id
     "SNS_TOPIC_ARN"     = module.sns-data-producer.arn
     "NUMBER_OF_THREADS" = 10
     "REGION"        = data.aws_region.current.name
