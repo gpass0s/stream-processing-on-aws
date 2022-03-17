@@ -7,7 +7,6 @@ name = "pypi"
 faker = "*"
 boto3 = "*"
 numpy = "*"
-pandas = "*"
 
 [dev-packages]
 
