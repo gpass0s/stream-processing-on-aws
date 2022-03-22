@@ -3,5 +3,5 @@ output "install_python_dependencies" {
 }
 
 output "package_output_path" {
-    value = "../${path.root}/${var.BUILD_SETTINGS["package_output_name"]}.zip"
+    value = "../utils/${var.BUILD_SETTINGS["package_output_name"]}.zip"
 }
