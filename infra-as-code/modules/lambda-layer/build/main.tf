@@ -17,10 +17,3 @@ resource "null_resource" "install_python_dependencies" {
     }
   }
 }
-
-/*data "archive_file" "my_lambda_function_with_dependencies" {
-  depends_on  = [null_resource.install_python_dependencies]
-  source_dir  = "../${path.root}/lambdas/"
-  output_path = "../${path.root}/${var.BUILD_SETTINGS["package_output_name"]}.zip"
-  type        = "zip"
-}*/
