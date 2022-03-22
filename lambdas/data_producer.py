@@ -43,9 +43,9 @@ def threads_controller(sns_client, sns_topic_arn, fake_data_generator, event_gen
             event, message_attributes = event_generator.generate_event(fake_data_generator, client_personal_info)
             sns_client.publish(
                 TargetArn=sns_topic_arn,
-                Message=json.dumps(event),
+                Message=json.dumps(event, default=str),
                 MessageAttributes=message_attributes,
-                MessageStructure="json"
+                MessageStructure="string"
             )
             time.sleep(random.uniform(0.5, 3.5))
 
@@ -61,7 +61,7 @@ def lambda_handler(event, context):
     clients_base = load_clients_base(csv_path_location)
     print("[INFO] Client's base loaded from S3")
     clients_base_chunks = numpy.array_split(clients_base, number_of_threads)
-    sns_client = boto3.client('sns', region=aws_region)
+    sns_client = boto3.client('sns', region_name=aws_region)
 
     event_generators = [CreateAddressEvent(), CreateRiskAnalysisEvent(), CreateHistoryEvent()]
     threads = []
