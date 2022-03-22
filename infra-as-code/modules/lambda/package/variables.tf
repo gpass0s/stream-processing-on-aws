@@ -2,6 +2,7 @@ variable PACKAGE_SETTINGS {
     type = map(string)
     default = {
       "type"      = ""
-      "filename"  = ""
+      "lambda_script_folder"  = ""
+      "folder_output_name" = ""
     }
 }
