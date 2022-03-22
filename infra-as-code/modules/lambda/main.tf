@@ -10,8 +10,17 @@ module "security" {
 module "package" {
   source = "./package"
   PACKAGE_SETTINGS = {
-    type     = "zip"
-    filename = var.LAMBDA_SETTINGS["filename"]
+    type               = "zip"
+    lambda_script_folder = var.LAMBDA_SETTINGS["lambda_script_folder"]
+    folder_output_name = var.RESOURCE_SUFFIX
+  }
+}
+
+module "observability" {
+  source = "./observability"
+  OBSERVABILITY_SETTINGS = {
+    "lambda_function_name" = local.RESOURCE_NAME
+    "log_retention_in_days" = 1
   }
 }
 
