@@ -7,7 +7,7 @@ if [[ $root_directory ]]; then # if the root_directory is set
 fi
 
 if [[ -z $package_output_name ]]; then # if package_output_name is not set
-  package_output_name=python_dependencies
+  package_output_name=lambda_layer
 fi
 
 if [[ -z $function_name ]]; then # if function_name is not set
@@ -43,24 +43,34 @@ fi
 # Deactivate virtual environment...
 deactivate
 
+cd $package_output_name
+mkdir python
+cd python
+mkdir lib
+cd lib
+mkdir $runtime
+cd $runtime
+mkdir site-packages
+cd ../../../../
+
 # Create deployment package...
 echo "Creating deployment package..."
 
-cp -r env_$function_name/lib/$runtime/site-packages/. $package_output_name
-cp -r lambdas/dependencies $package_output_name
+cp -r env_$function_name/lib/$runtime/site-packages/. $package_output_name/python/lib/$runtime/site-packages/
+cp -r lambdas/dependencies $package_output_name/python/lib/$runtime/site-packages/
 
 # Removing virtual environment folder...
 echo "Removing virtual environment folder..."
-rm -rf $env_$function_name
+rm -rf env_$function_name
 
 # Zipping deployment package...
 echo "Zipping deployment package..."
-rm -rf $$package_output_name.zip
-rm -rf $package_output_name/*pandas*
-zip -r $package_output_name.zip $package_output_name/.
+cd $package_output_name
+zip -r ../utils/lambda-deployment-packages/$package_output_name.zip .
+
+cd ../
 
 # Removing deployment package folder
 echo "Removing deployment package folder..."
 rm -rf $package_output_name
-rm -rf lambdas/.zip
 echo "Finished script execution!"
