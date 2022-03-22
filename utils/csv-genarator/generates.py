@@ -26,4 +26,4 @@ if __name__ == "__main__":
         reference_table_list.append(row_dict)
 
     reference_table_df = pd.DataFrame(reference_table_list)
-    reference_table_df.to_csv("../clients_annual_income.csv", index=False)
+    reference_table_df.to_csv("../lambdas/clients_annual_income.csv", index=False)
