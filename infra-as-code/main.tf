@@ -18,9 +18,9 @@ module "codepipeline-artifacts-bucket" {
 resource "aws_s3_object" "reference-table" {
   key = "reference-table/upload-from-terraform/clients_annual_income.csv"
   bucket = module.codepipeline-artifacts-bucket.id
-  source = "../utils/clients_annual_income.csv"
+  source = "../lambdas/clients_annual_income.csv"
   server_side_encryption = "AES256"
-  etag = filemd5("../utils/clients_annual_income.csv")
+  etag = filemd5("../lambdas/clients_annual_income.csv")
 }
 #endregion
 
@@ -32,7 +32,7 @@ module "lambda-layer" {
   RESOURCE_SUFFIX       = "lambda-layer"
   BUILDER_SCRIPT_PATH   = "../utils/layer-builder/build.sh"
   REQUIREMENTS_PATH     = "requirements.txt"
-  PACKAGE_OUTPUT_NAME   = "python_dependencies"
+  PACKAGE_OUTPUT_NAME   = "lambda_layer"
 }
 #endregion
 
@@ -44,25 +44,55 @@ module "lambda-data-producer" {
   RESOURCE_SUFFIX = "data-producer"
   LAMBDA_LAYER    = [module.lambda-layer.arn]
   LAMBDA_SETTINGS = {
-    "description" = "Data producer lambda"
-    "handler"     = "data_producer.lambda_handler"
-    "runtime"     = "python3.8"
-    "timeout"     = 600
-    "memory_size" = 512
-    "filename"    = "lambdas/"
+    "description"         = "This function is a data producer that reproduces up to NUMBER_THREADS access simultaneously to the data pipeline"
+    "handler"             = "data_producer.lambda_handler"
+    "runtime"             = "python3.8"
+    "timeout"             = 120
+    "memory_size"         = 512
+    "lambda_script_folder"  = "../lambdas/"
   }
   LAMBDA_ENVIRONMENT_VARIABLES = {
-    "CSV_PATH_LOCATION" = "s3://${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
-    "SNS_TOPIC_ARN"     = module.sns-data-producer.arn
+    "CSV_PATH_LOCATION" = "clients_annual_income.csv"
+    "SNS_TOPIC_ARN"     = module.sns-data-producer-topic.arn
     "NUMBER_OF_THREADS" = 10
-    "REGION"        = data.aws_region.current.name
+    "REGION"            = data.aws_region.current.name
   }
 }
-
+#endregion
 #region SNS
-module "sns-data-producer" {
+module "sns-data-producer-topic" {
   source          = "./modules/sns/topic"
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
-  RESOURCE_SUFFIX = "data-producer"
+  RESOURCE_SUFFIX = "data-producer-sns"
 }
+
+module "sns-data-producer-subscription" {
+  source          = "./modules/sns/subscription"
+  SETTINGS = {
+    "topic_arn"     = module.sns-data-producer-topic.arn
+    "endpoint"      = module.sqs-data-producer.arn
+    "protocol"      = "sqs"
+    "filter_policy" = ""
+  }
+}
+#endregion
+
+#region SQS
+module "sqs-data-producer" {
+  source      = "./modules/sqs/"
+  ENV             = local.ENV
+  PROJECT_NAME    = local.PROJECT_NAME
+  RESOURCE_SUFFIX = "data-producer-sqs"
+  SETTINGS = {
+    "delay_seconds"                  = 0
+    "max_message_size"               = 262144
+    "message_retention_seconds"      = 864000
+    "receive_wait_time_seconds"      = 0
+    "visibility_timeout_seconds"     = 1200
+    "dlq_max_receive_count"          = 1
+    "sns_filter_policy_subscription" = ""
+    "sns_topic_arn"                  = [module.sns-data-producer-topic.arn]
+  }
+}
+#endregion
