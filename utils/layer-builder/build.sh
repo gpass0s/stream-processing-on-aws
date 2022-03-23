@@ -7,7 +7,7 @@ if [[ $root_directory ]]; then # if the root_directory is set
 fi
 
 if [[ -z $package_output_name ]]; then # if package_output_name is not set
-  package_output_name=lambda_layer
+  package_output_name=lambda-layer
 fi
 
 if [[ -z $function_name ]]; then # if function_name is not set
