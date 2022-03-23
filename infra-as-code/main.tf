@@ -32,7 +32,7 @@ module "lambda-layer" {
   RESOURCE_SUFFIX       = "lambda-layer"
   BUILDER_SCRIPT_PATH   = "../utils/layer-builder/build.sh"
   REQUIREMENTS_PATH     = "requirements.txt"
-  PACKAGE_OUTPUT_NAME   = "lambda_layer"
+  PACKAGE_OUTPUT_NAME   = "lambda-layer"
 }
 #endregion
 
