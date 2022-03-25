@@ -51,14 +51,17 @@ def send_event_to_kds(data, kds_name):
 
 
 def lambda_handler(event, context):
-
+    """
+    Lambda method that is invoked by SQS
+    :param event: message from SQS
+    :param context:
+    """
     print(f"[INFO] Event received: {event}")
-
     kds_name = os.environ["KDS_NAME"]
 
     for record in event['Records']:
 
-        body: dict = json.loads(record['body'])
+        body = json.loads(record['body'])
         event = json.loads(body['Message'])
 
         event_name = event["eventName"]
@@ -71,5 +74,4 @@ def lambda_handler(event, context):
         event_name_field = "".join([w.title() if w != event_name.split("_")[0] else w for w in event_name.split("_")])
 
         flattened_event = flatten_event_schema(event, ssn, account_id, event_name_field)
-
         send_event_to_kds(flattened_event, kds_name)
