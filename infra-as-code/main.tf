@@ -37,15 +37,15 @@ module "lambda-layer" {
 #endregion
 
 #region lambda
-module "lambda-data-producer" {
+module "lambda-event-producer" {
   source          = "./modules/lambda"
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
-  RESOURCE_SUFFIX = "data-producer"
+  RESOURCE_SUFFIX = "event-producer"
   LAMBDA_LAYER    = [module.lambda-layer.arn]
   LAMBDA_SETTINGS = {
     "description"         = "This function is a data producer that reproduces up to NUMBER_THREADS access simultaneously to the data pipeline"
-    "handler"             = "data_producer.lambda_handler"
+    "handler"             = "event_producer.lambda_handler"
     "runtime"             = "python3.8"
     "timeout"             = 120
     "memory_size"         = 512
@@ -53,25 +53,25 @@ module "lambda-data-producer" {
   }
   LAMBDA_ENVIRONMENT_VARIABLES = {
     "CSV_PATH_LOCATION" = "clients_annual_income.csv"
-    "SNS_TOPIC_ARN"     = module.sns-data-producer-topic.arn
+    "SNS_TOPIC_ARN"     = module.sns-event-producer-topic.arn
     "NUMBER_OF_THREADS" = 10
     "REGION"            = data.aws_region.current.name
   }
 }
 #endregion
 #region SNS
-module "sns-data-producer-topic" {
+module "sns-event-producer-topic" {
   source          = "./modules/sns/topic"
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
-  RESOURCE_SUFFIX = "data-producer-sns"
+  RESOURCE_SUFFIX = "event-producer-sns"
 }
 
-module "sns-data-producer-subscription" {
+module "sns-event-producer-subscription" {
   source          = "./modules/sns/subscription"
   SETTINGS = {
-    "topic_arn"     = module.sns-data-producer-topic.arn
-    "endpoint"      = module.sqs-data-producer.arn
+    "topic_arn"     = module.sns-event-producer-topic.arn
+    "endpoint"      = module.sqs-event-producer.arn
     "protocol"      = "sqs"
     "filter_policy" = ""
   }
@@ -79,11 +79,11 @@ module "sns-data-producer-subscription" {
 #endregion
 
 #region SQS
-module "sqs-data-producer" {
+module "sqs-event-producer" {
   source      = "./modules/sqs/"
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
-  RESOURCE_SUFFIX = "data-producer-sqs"
+  RESOURCE_SUFFIX = "event-producer-queue"
   SETTINGS = {
     "delay_seconds"                  = 0
     "max_message_size"               = 262144
@@ -92,7 +92,7 @@ module "sqs-data-producer" {
     "visibility_timeout_seconds"     = 1200
     "dlq_max_receive_count"          = 1
     "sns_filter_policy_subscription" = ""
-    "sns_topic_arn"                  = [module.sns-data-producer-topic.arn]
+    "sns_topic_arn"                  = [module.sns-event-producer-topic.arn]
   }
 }
 #endregion
