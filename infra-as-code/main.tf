@@ -58,6 +58,32 @@ module "lambda-event-producer" {
     "REGION"            = data.aws_region.current.name
   }
 }
+
+module "lambda-event-flattener" {
+  source          = "./modules/lambda"
+  ENV             = local.ENV
+  PROJECT_NAME    = local.PROJECT_NAME
+  RESOURCE_SUFFIX = "event-flattener"
+  LAMBDA_LAYER    = [module.lambda-layer.arn]
+  LAMBDA_SETTINGS = {
+    "description"           = "This function flattens and standardizes the event schemas"
+    "handler"               = "event_flattener.lambda_handler"
+    "runtime"               = "python3.8"
+    "timeout"               = 120
+    "memory_size"           = 512
+    "lambda_script_folder"  = "../lambdas/"
+  }
+  LAMBDA_ENVIRONMENT_VARIABLES = {"KDS_NAME" = module.kds-input.name}
+  LAMBDA_EVENT_SOURCE = {
+    event_source_arn = module.sqs-event-producer.arn
+    event_source_url = module.sqs-event-producer.url
+    protocol         = "sqs"
+  }
+  LAMBDA_INVOKE_FUNCTION = {
+    type_arn        = "sqs.amazonaws.com"
+    target_arn      = module.sqs-event-producer.arn
+  }
+}
 #endregion
 #region SNS
 module "sns-event-producer-topic" {
@@ -80,7 +106,7 @@ module "sns-event-producer-subscription" {
 
 #region SQS
 module "sqs-event-producer" {
-  source      = "./modules/sqs/"
+  source          = "./modules/sqs/"
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
   RESOURCE_SUFFIX = "event-producer-queue"
@@ -94,5 +120,14 @@ module "sqs-event-producer" {
     "sns_filter_policy_subscription" = ""
     "sns_topic_arn"                  = [module.sns-event-producer-topic.arn]
   }
+}
+#endregion
+
+#region KDS
+module "kds-input" {
+  source    = "./modules/kinesis-data-stream"
+  ENV             = local.ENV
+  PROJECT_NAME    = local.PROJECT_NAME
+  RESOURCE_SUFFIX = "input-stream"
 }
 #endregion
