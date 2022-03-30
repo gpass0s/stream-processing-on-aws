@@ -28,6 +28,7 @@ def lambda_handler(event, context):
         # load event
         body = json.loads(record['body'])
         event = json.loads(body['Message'])
+
         # extract key fields
         event_name = event["eventName"]
         ssn = str(event["data"]["ssn"])
@@ -35,9 +36,12 @@ def lambda_handler(event, context):
             account_id = str(event["data"]["accountId"])
         except KeyError:
             account_id = ""
+
         # create event name field
-        event_name_field = "".join([w.title() if w != event_name.split("_")[0] else w for w in event_name.split("_")])
-        event_name_fields = {"clientAddress": None, "clientRiskAnalysis": None, "clientHistory": None}
+        event_name_field = \
+            "".join([w.title() if w != event_name.split("_")[0] else w for w in event_name.split("_")]) + "Event"
+        event_name_fields = ["clientAddressEvent", "clientRiskAnalysisEvent", "clientHistoryEvent"]
+
         # flatten and standardize event schema
         flattened_event = {
             "ssn": ssn,
@@ -45,8 +49,11 @@ def lambda_handler(event, context):
             "streamProcTimestamp": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
             event_name_field: json.dumps(event)
         }
-        del event_name_fields[event_name_field]
+        event_name_fields.remove(event_name_field)
         for key in event_name_fields:
             flattened_event[key] = ""
+        print(f"[INFO] Event flattened: {flattened_event}")
+
         # send the new event to kinesis data stream
-        _kds_client.put_record(StreamName=_kds_name, ata=json.dumps(flattened_event), PartitionKey='1')
+        _kds_client.put_record(StreamName=_kds_name, Data=json.dumps(flattened_event), PartitionKey='1')
+        print(f"[INFO] Event successfully sent to kinesis data stream")
