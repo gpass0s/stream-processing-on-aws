@@ -12,8 +12,4 @@ resource "aws_kinesis_stream" "kinesis_stream" {
     "OutgoingBytes",
   ]
 
-  tags = {
-    environment = var.AWS_TAGS
-  }
-
 }

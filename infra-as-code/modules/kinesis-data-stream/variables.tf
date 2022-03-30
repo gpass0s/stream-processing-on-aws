@@ -2,8 +2,6 @@ variable "ENV" {}
 
 variable "PROJECT_NAME" {}
 
-variable "AWS_TAGS" {}
-
 variable "NUMBER_OF_SHARDS" {
   default = 1
 }
