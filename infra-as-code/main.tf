@@ -7,7 +7,7 @@ data "aws_region" "current" {}
 
 #region S3
 #Creates a S3 bucket
-module "codepipeline-artifacts-bucket" {
+module "project-artifacts-bucket" {
   source          = "./modules/s3"
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
@@ -16,8 +16,8 @@ module "codepipeline-artifacts-bucket" {
 
 #Uploads the reference table to S3
 resource "aws_s3_object" "reference-table" {
-  key = "reference-table/upload-from-terraform/clients_annual_income.csv"
-  bucket = module.codepipeline-artifacts-bucket.id
+  key = "reference-table/clients_annual_income.csv"
+  bucket = module.project-artifacts-bucket.id
   source = "../lambdas/clients_annual_income.csv"
   server_side_encryption = "AES256"
   etag = filemd5("../lambdas/clients_annual_income.csv")
@@ -130,4 +130,30 @@ module "kds-input" {
   PROJECT_NAME    = local.PROJECT_NAME
   RESOURCE_SUFFIX = "input-stream"
 }
+
+module "kds-output" {
+  source    = "./modules/kinesis-data-stream"
+  ENV             = local.ENV
+  PROJECT_NAME    = local.PROJECT_NAME
+  RESOURCE_SUFFIX = "output-stream"
+}
 #endregion
+
+# region KDA
+module "kda-credit-online" {
+  source                              = "./modules/kinesis-data-analytics"
+  ENV                                 = local.ENV
+  PROJECT_NAME                        = local.PROJECT_NAME
+  RESOURCE_SUFFIX                     = "join-streams"
+  KDS_INPUT_RESOURCE_NAME             = module.kds-input.name
+  INPUT_SCHEMA_COLUMNS                = var.KDA_STREAM_INPUT_SCHEMA
+  RECORD_ROW_PATH                     = "$"
+  SQL_CODE_PATH                       = file("../join_stream_query.sql")
+  KDS_INPUT_ARN                       = module.kds-input.arn
+  REFERENCE_TABLE_NAME                = "occupation and annual income"
+  REFERENCE_TABLE_S3_FILE_KEY         = "${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
+  REFERENCE_TABLE_SCHEMA_COLUMNS      = var.KDA_STREAM_INPUT_SCHEMA
+  KDS_OUTPUT_RESOURCE_NAME            = module.kds-output.name
+  KDS_OUTPUT_ARN                      = module.kds-output.arn
+}
+# endregion
