@@ -64,24 +64,46 @@ module "lambda-event-flattener" {
   ENV             = local.ENV
   PROJECT_NAME    = local.PROJECT_NAME
   RESOURCE_SUFFIX = "event-flattener"
-  LAMBDA_LAYER    = [module.lambda-layer.arn]
   LAMBDA_SETTINGS = {
     "description"           = "This function flattens and standardizes the event schemas"
     "handler"               = "event_flattener.lambda_handler"
     "runtime"               = "python3.8"
     "timeout"               = 120
-    "memory_size"           = 512
+    "memory_size"           = 256
     "lambda_script_folder"  = "../lambdas/"
   }
   LAMBDA_ENVIRONMENT_VARIABLES = {"KDS_NAME" = module.kds-input.name}
   LAMBDA_EVENT_SOURCE = {
-    event_source_arn = module.sqs-event-producer.arn
-    event_source_url = module.sqs-event-producer.url
-    protocol         = "sqs"
+    event_source_arn    = module.sqs-event-producer.arn
+    event_source_enable = true
   }
   LAMBDA_INVOKE_FUNCTION = {
     type_arn        = "sqs.amazonaws.com"
     target_arn      = module.sqs-event-producer.arn
+  }
+}
+
+module "lambda-kinesis-output" {
+  source          = "./modules/lambda"
+  ENV             = local.ENV
+  PROJECT_NAME    = local.PROJECT_NAME
+  RESOURCE_SUFFIX = "kinesis-output"
+  LAMBDA_SETTINGS = {
+    "description"           = "This function receives kinesis data analytics output"
+    "handler"               = "kinesis_output.lambda_handler"
+    "runtime"               = "python3.8"
+    "timeout"               = 120
+    "memory_size"           = 128
+    "lambda_script_folder"  = "../lambdas/"
+  }
+  LAMBDA_ENVIRONMENT_VARIABLES = {"KDS_NAME" = module.kds-input.name}
+  LAMBDA_EVENT_SOURCE = {
+    event_source_arn    = module.kds-output.arn
+    event_source_enable = true
+  }
+  LAMBDA_INVOKE_FUNCTION = {
+    type_arn        = "kinesis.amazonaws.com"
+    target_arn      = module.kds-output.arn
   }
 }
 #endregion
@@ -140,7 +162,7 @@ module "kds-output" {
 #endregion
 
 # region KDA
-module "kda-credit-online" {
+module "kda-join-streams" {
   source                              = "./modules/kinesis-data-analytics"
   ENV                                 = local.ENV
   PROJECT_NAME                        = local.PROJECT_NAME
