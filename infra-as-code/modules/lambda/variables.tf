@@ -14,9 +14,8 @@ variable "LAMBDA_SETTINGS" {
 variable "LAMBDA_EVENT_SOURCE" {
   type = any
   default = {
-    "event_source_arn" = ""
-    "event_source_url" = ""
-    "protocol"         = ""
+    "event_source_arn"  = ""
+    "trigger"           = ""
   }
 }
 
