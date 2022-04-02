@@ -18,9 +18,9 @@ _kds_name = os.environ["KDS_NAME"]
 
 def lambda_handler(event, context):
     """
-    Lambda method that is invoked by SQS
-    :param event: message from SQS
-    :param context:
+        Lambda method that is invoked by SQS
+        :param event: message from SQS
+        :param context:
     """
     print(f"[INFO] Event received: {event}")
 
@@ -29,30 +29,20 @@ def lambda_handler(event, context):
         body = json.loads(record['body'])
         event = json.loads(body['Message'])
 
-        # extract key fields
+        # extract key field
         event_name = event["eventName"]
         ssn = str(event["data"]["ssn"])
-        try:
-            account_id = str(event["data"]["accountId"])
-        except KeyError:
-            account_id = ""
 
         # create event name field
         event_name_field = \
             "".join([w.title() if w != event_name.split("_")[0] else w for w in event_name.split("_")]) + "Event"
-        event_name_fields = ["clientAddressEvent", "clientRiskAnalysisEvent", "clientHistoryEvent"]
 
         # flatten and standardize event schema
         flattened_event = {
             "ssn": ssn,
-            "accountId": account_id,
             "streamProcTimestamp": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
             event_name_field: json.dumps(event)
         }
-        event_name_fields.remove(event_name_field)
-        for key in event_name_fields:
-            flattened_event[key] = ""
-        print(f"[INFO] Event flattened: {flattened_event}")
 
         # send the new event to kinesis data stream
         _kds_client.put_record(StreamName=_kds_name, Data=json.dumps(flattened_event), PartitionKey='1')
