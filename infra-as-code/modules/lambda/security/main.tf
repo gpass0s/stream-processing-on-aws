@@ -92,4 +92,16 @@ data "aws_iam_policy_document" "lambda_role_policy" {
       "*"
     ]
   }
+  statement {
+    sid = "ReadInputKinesis"
+    effect = "Allow"
+    actions = [
+      "kinesis:DescribeStream",
+      "kinesis:GetShardIterator",
+      "kinesis:GetRecords"
+    ]
+    resources = [
+      "*"
+    ]
+  }
 }
