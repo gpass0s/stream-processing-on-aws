@@ -5,7 +5,6 @@ locals {
 module "security" {
   source                    = "./security"
   RESOURCE_NAME             = local.RESOURCE_NAME
-  AWS_TAGS                  = var.AWS_TAGS
   ENV                       = var.ENV
   KDS_INPUT_RESOURCE_NAME   = var.KDS_INPUT_RESOURCE_NAME
   KDS_OUTPUT_RESOURCE_NAME  = var.KDS_OUTPUT_RESOURCE_NAME
@@ -19,7 +18,7 @@ resource "aws_kinesis_analytics_application" "kda_application" {
     name_prefix = var.INPUT_STREAM_NAME
 
     kinesis_stream {
-      resource_arn = var.INPUT_STREAM_ARN
+      resource_arn = var.KDS_INPUT_ARN
       role_arn     = module.security.role-kinesis-analytics-arn
     }
 
@@ -78,7 +77,7 @@ resource "aws_kinesis_analytics_application" "kda_application" {
     name = var.OUTPUT_STREAM_NAME
 
     kinesis_stream {
-      resource_arn = var.OUTPUT_STREAM_ARN
+      resource_arn = var.KDS_OUTPUT_ARN
       role_arn = module.security.role-kinesis-analytics-arn
     }
 
