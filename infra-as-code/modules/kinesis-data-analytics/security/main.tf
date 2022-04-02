@@ -16,7 +16,6 @@ resource "aws_iam_role" "iam_for_kinesis" {
   name               = var.RESOURCE_NAME
   assume_role_policy = data.aws_iam_policy_document.kinesis_role.json
   path               = "/service-role/"
-  tags               = var.AWS_TAGS
 }
 
 data "aws_iam_policy_document" "kinesis_role" {
@@ -59,7 +58,7 @@ data "aws_iam_policy_document" "kinesis_role_policy" {
       "kinesis:PutRecords"
     ]
     resources = [
-      "arn:aws:kinesis:${local.AWS_REGION}:${local.AWS_ACCOUNT}:stream/${var.KDS_INPUT_RESOURCE_NAME}"
+      "arn:aws:kinesis:${local.AWS_REGION}:${local.AWS_ACCOUNT}:stream/${var.KDS_OUTPUT_RESOURCE_NAME}"
     ]
   }
   statement{
@@ -175,7 +174,7 @@ data "aws_iam_policy_document" "kinesis_role_policy" {
       values = [ "*" ]
     }
   }
-  statement{
+  statement {
     sid= "UseLambdaFunction"
     effect= "Allow"
     actions= [
