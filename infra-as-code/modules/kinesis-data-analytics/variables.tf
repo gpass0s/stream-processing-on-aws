@@ -2,21 +2,15 @@ variable "ENV" {}
 
 variable "PROJECT_NAME" {}
 
-variable "APP" {}
-
 variable RESOURCE_SUFFIX{}
 
-variable "AWS_TAGS" {
-  type = map(string)
-}
+variable INPUT_STREAM_NAME {}
+
+variable OUTPUT_STREAM_NAME {}
 
 variable "KDS_INPUT_RESOURCE_NAME" {}
 
 variable "KDS_OUTPUT_RESOURCE_NAME" {}
-
-variable "INPUT_STREAM_NAME" {}
-
-variable "OUTPUT_STREAM_NAME" {}
 
 variable SQL_CODE_PATH {}
 
@@ -31,6 +25,7 @@ variable "INPUT_SCHEMA_COLUMNS" {
 
 variable "RECORD_ROW_PATH" {
   type = string
+  default = "$"
 }
 
 variable "REFERENCE_TABLE_NAME" {
@@ -54,9 +49,9 @@ variable "REFERENCE_TABLE_SCHEMA_COLUMNS"{
   default = []
 }
 
-variable "INPUT_STREAM_ARN" {}
+variable "KDS_INPUT_ARN" {}
 
-variable "OUTPUT_STREAM_ARN" {}
+variable "KDS_OUTPUT_ARN" {}
 
 variable "COUNT_VALUE" {
   default = 1
