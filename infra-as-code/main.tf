@@ -75,11 +75,7 @@ module "lambda-event-flattener" {
   LAMBDA_ENVIRONMENT_VARIABLES = {"KDS_NAME" = module.kds-input.name}
   LAMBDA_EVENT_SOURCE = {
     event_source_arn    = module.sqs-event-producer.arn
-    event_source_enable = true
-  }
-  LAMBDA_INVOKE_FUNCTION = {
-    type_arn        = "sqs.amazonaws.com"
-    target_arn      = module.sqs-event-producer.arn
+    trigger             = "sqs"
   }
 }
 
@@ -99,11 +95,7 @@ module "lambda-kinesis-output" {
   LAMBDA_ENVIRONMENT_VARIABLES = {"KDS_NAME" = module.kds-input.name}
   LAMBDA_EVENT_SOURCE = {
     event_source_arn    = module.kds-output.arn
-    event_source_enable = true
-  }
-  LAMBDA_INVOKE_FUNCTION = {
-    type_arn        = "kinesis.amazonaws.com"
-    target_arn      = module.kds-output.arn
+    trigger             = "kinesis"
   }
 }
 #endregion
@@ -167,15 +159,18 @@ module "kda-join-streams" {
   ENV                                 = local.ENV
   PROJECT_NAME                        = local.PROJECT_NAME
   RESOURCE_SUFFIX                     = "join-streams"
-  KDS_INPUT_RESOURCE_NAME             = module.kds-input.name
+  INPUT_STREAM_NAME                   = "INPUT_STREAM"
   INPUT_SCHEMA_COLUMNS                = var.KDA_STREAM_INPUT_SCHEMA
   RECORD_ROW_PATH                     = "$"
   SQL_CODE_PATH                       = file("../join_stream_query.sql")
   KDS_INPUT_ARN                       = module.kds-input.arn
-  REFERENCE_TABLE_NAME                = "occupation and annual income"
-  REFERENCE_TABLE_S3_FILE_KEY         = "${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
-  REFERENCE_TABLE_SCHEMA_COLUMNS      = var.KDA_STREAM_INPUT_SCHEMA
-  KDS_OUTPUT_RESOURCE_NAME            = module.kds-output.name
+  KDS_INPUT_RESOURCE_NAME             = module.kds-input.name
+  REFERENCE_TABLE_BUCKET_ARN          = module.project-artifacts-bucket.arn
+  REFERENCE_TABLE_NAME                = "REFERENCE_TABLE"
+  REFERENCE_TABLE_S3_FILE_KEY         = "s3://${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
+  REFERENCE_TABLE_SCHEMA_COLUMNS      = var.KDA_REFERENCE_TABLE_SCHEMA
+  OUTPUT_STREAM_NAME                  = "OUTPUT_STREAM"
   KDS_OUTPUT_ARN                      = module.kds-output.arn
+  KDS_OUTPUT_RESOURCE_NAME            = module.kds-output.name
 }
 # endregion
