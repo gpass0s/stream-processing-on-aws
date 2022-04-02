@@ -14,17 +14,17 @@ variable KDA_STREAM_INPUT_SCHEMA {
     {
       mapping = "$.clientAddressEvent",
       name = "clientAddressEvent",
-      sql_type = "VARCHAR(32768)"
+      sql_type = "VARCHAR(8192)"
     },
     {
       mapping  = "$.clientRiskAnalysisEvent",
       name     = "clientRiskAnalysisEvent",
-      sql_type = "VARCHAR(32768)"
+      sql_type = "VARCHAR(8192)"
     },
     {
       mapping  = "$.clientHistoryEvent",
       name     = "clientHistoryEvent",
-      sql_type = "VARCHAR(32768)"
+      sql_type = "VARCHAR(8192)"
     }
   ]
 }
@@ -50,12 +50,12 @@ variable KDA_REFERENCE_TABLE_SCHEMA {
     {
       mapping = "$.date_of_birth",
       name = "date_of_birth",
-      sql_type = "date_of_birth(32)"
+      sql_type = "VARCHAR(32)"
     },
     {
       mapping = "$.occupation",
       name = "occupation",
-      sql_type = "occupation(32)"
+      sql_type = "VARCHAR(32)"
     },
     {
       mapping = "$.annual_income",
