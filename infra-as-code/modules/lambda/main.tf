@@ -37,10 +37,9 @@ module "invoker" {
 module "event_source" {
   source = "./event-source"
   SETTINGS = {
-    "event_source_arn" = var.LAMBDA_EVENT_SOURCE["event_source_arn"]
-    "event_source_url" = var.LAMBDA_EVENT_SOURCE["event_source_url"]
-    "protocol"         = var.LAMBDA_EVENT_SOURCE["protocol"]
-    "lambda_arn"       = aws_lambda_function.lambda.arn
+    "event_source_arn"    = var.LAMBDA_EVENT_SOURCE["event_source_arn"]
+    "trigger"             = var.LAMBDA_EVENT_SOURCE["trigger"]
+    "lambda_arn"          = aws_lambda_function.lambda.arn
   }
 }
 
