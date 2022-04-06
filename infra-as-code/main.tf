@@ -1,9 +1,10 @@
-locals {
-  PROJECT_NAME   = "streaming-processing"
-  ENV            = "dev"
-}
+data "aws_region" "current_region" {}
 
-data "aws_region" "current" {}
+locals {
+  PROJECT_NAME                 = "streaming-processing"
+  ENV                          = "dev"
+  AWS_REGION                   = data.aws_region.current_region.name
+}
 
 #region S3
 #Creates a S3 bucket
@@ -47,7 +48,7 @@ module "lambda-event-producer" {
     "description"         = "This function is a data producer that reproduces up to NUMBER_THREADS access simultaneously to the data pipeline"
     "handler"             = "event_producer.lambda_handler"
     "runtime"             = "python3.8"
-    "timeout"             = 120
+    "timeout"             = 900
     "memory_size"         = 512
     "lambda_script_folder"  = "../lambdas/"
   }
@@ -55,7 +56,7 @@ module "lambda-event-producer" {
     "CSV_PATH_LOCATION" = "clients_annual_income.csv"
     "SNS_TOPIC_ARN"     = module.sns-event-producer-topic.arn
     "NUMBER_OF_THREADS" = 10
-    "REGION"            = data.aws_region.current.name
+    "REGION"            = local.AWS_REGION
   }
 }
 
@@ -154,6 +155,11 @@ module "kds-output" {
 #endregion
 
 # region KDA
+
+locals {
+
+}
+
 module "kda-join-streams" {
   source                              = "./modules/kinesis-data-analytics"
   ENV                                 = local.ENV
@@ -164,13 +170,16 @@ module "kda-join-streams" {
   RECORD_ROW_PATH                     = "$"
   SQL_CODE_PATH                       = file("../join_stream_query.sql")
   KDS_INPUT_ARN                       = module.kds-input.arn
-  KDS_INPUT_RESOURCE_NAME             = module.kds-input.name
+  REFERENCE_TABLE_S3_ARN              = "arn:aws:s3:::${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
   REFERENCE_TABLE_BUCKET_ARN          = module.project-artifacts-bucket.arn
   REFERENCE_TABLE_NAME                = "REFERENCE_TABLE"
-  REFERENCE_TABLE_S3_FILE_KEY         = "s3://${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
+  REFERENCE_TABLE_S3_FILE_KEY         = aws_s3_object.reference-table.key
   REFERENCE_TABLE_SCHEMA_COLUMNS      = var.KDA_REFERENCE_TABLE_SCHEMA
   OUTPUT_STREAM_NAME                  = "OUTPUT_STREAM"
   KDS_OUTPUT_ARN                      = module.kds-output.arn
-  KDS_OUTPUT_RESOURCE_NAME            = module.kds-output.name
+  REFERENCE_TABLE_RECORD_FORMAT       = {
+    "record_column_delimiter"     = "\n"
+    "record_row_delimiter"        = ";"
+  }
 }
 # endregion
