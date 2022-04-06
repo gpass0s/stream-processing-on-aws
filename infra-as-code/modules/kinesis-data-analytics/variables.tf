@@ -8,9 +8,7 @@ variable INPUT_STREAM_NAME {}
 
 variable OUTPUT_STREAM_NAME {}
 
-variable "KDS_INPUT_RESOURCE_NAME" {}
-
-variable "KDS_OUTPUT_RESOURCE_NAME" {}
+variable "REFERENCE_TABLE_S3_ARN" {}
 
 variable SQL_CODE_PATH {}
 
@@ -59,4 +57,12 @@ variable "COUNT_VALUE" {
 
 variable "ENCODE" {
   default = "UTF-8"
+}
+
+variable "REFERENCE_TABLE_RECORD_FORMAT" {
+  type = any
+  default = {
+    record_column_delimiter = "\n"
+    record_row_delimiter    = ","
+  }
 }

@@ -3,13 +3,13 @@ locals {
 }
 
 module "security" {
-  source                    = "./security"
-  RESOURCE_NAME             = local.RESOURCE_NAME
-  ENV                       = var.ENV
-  KDS_INPUT_RESOURCE_NAME   = var.KDS_INPUT_RESOURCE_NAME
-  KDS_OUTPUT_RESOURCE_NAME  = var.KDS_OUTPUT_RESOURCE_NAME
+  source                  = "./security"
+  RESOURCE_NAME           = local.RESOURCE_NAME
+  ENV                     = var.ENV
+  KDS_INPUT_RESOURCE_ARN  = var.KDS_INPUT_ARN
+  KDS_OUTPUT_RESOURCE_ARN = var.KDS_OUTPUT_ARN
+  REFERENCE_TABLE_S3_ARN  = var.REFERENCE_TABLE_S3_ARN
 }
-
 resource "aws_kinesis_analytics_application" "kda_application" {
   name = local.RESOURCE_NAME
   code = var.SQL_CODE_PATH
@@ -65,8 +65,8 @@ resource "aws_kinesis_analytics_application" "kda_application" {
       record_format {
         mapping_parameters {
           csv {
-            record_column_delimiter = ","
-            record_row_delimiter    = "|"
+            record_column_delimiter = var.REFERENCE_TABLE_RECORD_FORMAT["record_column_delimiter"]
+            record_row_delimiter    = var.REFERENCE_TABLE_RECORD_FORMAT["record_row_delimiter"]
           }
         }
       }
@@ -84,7 +84,6 @@ resource "aws_kinesis_analytics_application" "kda_application" {
     schema {
       record_format_type = "JSON"
     }
-
   }
   start_application = false
 }

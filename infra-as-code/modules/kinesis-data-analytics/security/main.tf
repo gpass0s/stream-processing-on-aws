@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "kinesis_role_policy" {
       "kinesis:GetRecords"
     ]
     resources = [
-      "arn:aws:kinesis:${local.AWS_REGION}:${local.AWS_ACCOUNT}:stream/${var.KDS_INPUT_RESOURCE_NAME}"
+      var.KDS_INPUT_RESOURCE_ARN
     ]
   }
   statement {
@@ -58,30 +58,7 @@ data "aws_iam_policy_document" "kinesis_role_policy" {
       "kinesis:PutRecords"
     ]
     resources = [
-      "arn:aws:kinesis:${local.AWS_REGION}:${local.AWS_ACCOUNT}:stream/${var.KDS_OUTPUT_RESOURCE_NAME}"
-    ]
-  }
-  statement{
-    sid= "WriteOutputFirehose"
-    effect= "Allow"
-    actions= [
-        "firehose:DescribeDeliveryStream",
-        "firehose:PutRecord",
-        "firehose:PutRecordBatch"
-    ]
-    resources= [
-        "*"
-    ]
-  }
-  statement{
-    sid= "ReadInputFirehose"
-    effect= "Allow"
-    actions= [
-        "firehose:DescribeDeliveryStream",
-        "firehose:*"
-    ]
-    resources= [
-        "*"
+      "*"
     ]
   }
   statement{
@@ -91,7 +68,7 @@ data "aws_iam_policy_document" "kinesis_role_policy" {
         "s3:GetObject"
     ]
     resources= [
-        "arn:aws:s3:::baas-data-${var.ENV}-pipeline-assets/credit-online/kda-utils/mobile_enhancement_table.csv"
+        var.REFERENCE_TABLE_S3_ARN
     ]
   }
   statement{
