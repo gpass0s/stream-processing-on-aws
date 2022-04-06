@@ -40,10 +40,9 @@ def lambda_handler(event, context):
         # flatten and standardize event schema
         flattened_event = {
             "ssn": ssn,
-            "streamProcTimestamp": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3],
             event_name_field: json.dumps(event)
         }
 
         # send the new event to kinesis data stream
-        _kds_client.put_record(StreamName=_kds_name, Data=json.dumps(flattened_event), PartitionKey='1')
+        _kds_client.put_record(StreamName=_kds_name, Data=json.dumps(flattened_event), PartitionKey="1")
         print(f"[INFO] Event successfully sent to kinesis data stream")
