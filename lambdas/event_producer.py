@@ -23,7 +23,7 @@ from dependencies.event_factory import \
 def load_clients_base(csv_path_location):
     clients_base = []  # clients data base
     with open(csv_path_location) as file:
-        my_reader = csv.reader(file, delimiter=",")
+        my_reader = csv.reader(file, delimiter=";")
         next(my_reader, None)  # skip file header
         for row in my_reader:
             client = {"ssn": row[0], "accountId": row[1], "name": row[2]}
