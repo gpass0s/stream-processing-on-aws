@@ -6,12 +6,14 @@ author: https://github.com/gpass0s/
 This module prints the kinesis data analytics output
 """
 import json
+import base64
 
 
 def lambda_handler(event, context):
 
     for record in event['Records']:
         # load event
-        body = json.loads(record['body'])
-        event = json.loads(body['Message'])
+        body = record["kinesis"]
+        encrypted_data = body["data"]
+        event = base64.b64decode(encrypted_data).decode("utf-8")
         print(f"[INFO] Aggregated event: {event}")
