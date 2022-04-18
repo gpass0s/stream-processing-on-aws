@@ -168,7 +168,7 @@ module "kda-join-streams" {
   INPUT_STREAM_NAME                   = "INPUT_STREAM"
   INPUT_SCHEMA_COLUMNS                = var.KDA_STREAM_INPUT_SCHEMA
   RECORD_ROW_PATH                     = "$"
-  SQL_CODE_PATH                       = file("../join_stream_query.sql")
+  SQL_CODE_PATH                       = file("../kinesis_data_analytics_application.sql")
   KDS_INPUT_ARN                       = module.kds-input.arn
   REFERENCE_TABLE_S3_ARN              = "arn:aws:s3:::${aws_s3_object.reference-table.bucket}/${aws_s3_object.reference-table.key}"
   REFERENCE_TABLE_BUCKET_ARN          = module.project-artifacts-bucket.arn
@@ -178,8 +178,8 @@ module "kda-join-streams" {
   OUTPUT_STREAM_NAME                  = "OUTPUT_STREAM"
   KDS_OUTPUT_ARN                      = module.kds-output.arn
   REFERENCE_TABLE_RECORD_FORMAT       = {
-    "record_column_delimiter"     = "\n"
-    "record_row_delimiter"        = ";"
+    "record_column_delimiter"     = ";"
+    "record_row_delimiter"        = "\n"
   }
 }
 # endregion
