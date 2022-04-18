@@ -13,8 +13,7 @@ CREATE OR REPLACE STREAM "OUTPUT_STREAM" (
     occupation VARCHAR(128),
     annual_income DOUBLE
 );
--- Column's position in the  following SELECT statement
--- has to be exactly like the one in the OUTPUT STREAM schema.
+
 CREATE OR REPLACE PUMP "INTERMEDIARY_STREAM_PUMP" AS
 INSERT INTO "INTERMEDIARY_STREAM"
 SELECT
