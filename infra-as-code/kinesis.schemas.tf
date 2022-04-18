@@ -35,7 +35,7 @@ variable KDA_REFERENCE_TABLE_SCHEMA {
     {
       mapping = "$.accountId",
       name = "accountId",
-      sql_type = "INTEGER"
+      sql_type = "VARCHAR(16)"
     },
     {
       mapping = "$.name",
