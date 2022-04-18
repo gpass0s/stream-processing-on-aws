@@ -21,7 +21,7 @@ environment.
 ```
 git clone https://github.com/gpass0s/streaming-processing-on-aws.git
 ```
-2. Access this project's infra as code folder 
+2. Access this project's infra-as-code folder 
 ```
 cd streaming-processing-on-aws/infra-as-code
 ```
